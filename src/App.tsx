@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 
-const Stopwatch: React.FC = () => {
+const App: React.FC = () => {
 	const [isRunning, setIsRunning] = useState(false);
 	const [elapsedTime, setElapsedTime] = useState(0);
 
@@ -39,4 +39,4 @@ const Stopwatch: React.FC = () => {
 	);
 };
 
-export default Stopwatch;
+export default App;
