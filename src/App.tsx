@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useRef } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const Stopwatch: React.FC = () => {
+	const [isRunning, setIsRunning] = useState(false);
+	const [elapsedTime, setElapsedTime] = useState(0);
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+	const intervalRef = useRef<number>();
 
-export default App
+	const start = () => {
+		setIsRunning(true);
+		intervalRef.current = window.setInterval(() => {
+			setElapsedTime((prevElapsedTime) => prevElapsedTime + 10);
+		}, 10);
+	};
+
+	const stop = () => {
+		setIsRunning(false);
+		window.clearInterval(intervalRef.current);
+	};
+
+	const reset = () => {
+		setElapsedTime(0);
+	};
+
+	const formatTime = (time: number) => {
+		const minutes = Math.floor(time / 60000);
+		const seconds = Math.floor((time % 60000) / 1000);
+		const milliseconds = Math.floor((time % 1000) / 10);
+		return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${milliseconds.toString().padStart(2, "0")}`;
+	};
+
+	return (
+		<div>
+			<div>{formatTime(elapsedTime)}</div>
+			{!isRunning && <button onClick={start}>Start</button>}
+			{isRunning && <button onClick={stop}>Stop</button>}
+			<button onClick={reset}>Reset</button>
+		</div>
+	);
+};
+
+export default Stopwatch;
