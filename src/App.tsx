@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 const App: React.FC = () => {
 	const [isRunning, setIsRunning] = useState(false);
